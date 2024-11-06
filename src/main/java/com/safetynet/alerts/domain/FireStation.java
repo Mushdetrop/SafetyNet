@@ -8,6 +8,7 @@ public class FireStation {
         this.stationNumber = stationNumber;
         this.address = address;
     }
+
     //Getters and Setters
     public int getStationNumber() {
         return stationNumber;
@@ -23,5 +24,13 @@ public class FireStation {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "FireStation{" +
+                "stationNumber=" + stationNumber +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

@@ -22,6 +22,9 @@ public class Person {
         this.email = email;
     }
 
+    public Person(String john, String boyd, String address, String culver, String phone, String number) {
+    }
+
     public String getFirstName() {
         return firstName;
     }

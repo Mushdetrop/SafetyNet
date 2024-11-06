@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -21,5 +23,21 @@ public class MedicalRecordController {
         // Fetch all medicalRecords from the repository
         List<MedicalRecord> medicalRecords = dataRepo.getMedicalRecords();
         return medicalRecords;
+    }
+
+    // Add a new medical record
+    @PostMapping("/add")
+    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord newMedicalRecord) {
+        // Add the new medical record to the repository
+        dataRepo.addMedicalRecord(newMedicalRecord);
+        return newMedicalRecord;
+    }
+
+    // Update an existing medical record by ID
+    @PutMapping("/{firstName}/{lastName}")
+    public MedicalRecord updateMedicalRecord(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @RequestBody MedicalRecord updatedMedicalRecord) {
+        // Update the medical record in the repository
+        MedicalRecord existingMedicalRecord = dataRepo.updateMedicalRecord(updatedMedicalRecord);
+        return existingMedicalRecord;
     }
 }

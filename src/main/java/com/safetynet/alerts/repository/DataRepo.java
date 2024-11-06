@@ -7,12 +7,16 @@ import com.safetynet.alerts.domain.Person;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Repository;
+
+
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.jsoniter.JsonIterator;
 
@@ -23,16 +27,17 @@ import com.jsoniter.any.Any;
 
 @Repository
 public class DataRepo {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataRepo.class);
     private static final String DATA_PATH = "src/main/resources/data.json";
     private final List<Person> people;
     private final List<FireStation> fireStations;
     private static Logger ILoggerFactory;
-    private static final Logger logger = ILoggerFactory;
     private final List<MedicalRecord> medicalRecords;
     private Long id;
     private Person updatedPerson;
 
-    public DataRepo(List<Person> people) {
+    public DataRepo() {
         this.people = parsePeopleJson();
         this.fireStations = parseFireStationsJson();
         try {
@@ -104,24 +109,31 @@ public class DataRepo {
     }
 
     private List<MedicalRecord> parseMedicalRecordsJson() throws IOException {
-        List<MedicalRecord> medicalrecords = new ArrayList<>();
+        List<MedicalRecord> records = new ArrayList<>();
+        //return Array<medicalrecords> (new MedicalRecord())
         try {
             byte[] bytesFile = Files.readAllBytes(Paths.get(DATA_PATH));
             JsonIterator iter = JsonIterator.parse(bytesFile);
             Any any = iter.readAny();
-            Any medicalRecordAny = any.get("medical records");
+            Any medicalRecordAny = any.get("medicalrecords");
 
-            medicalRecordAny.forEach(a -> {
-                String medications = a.get("medications").toString();
-                String allergies = a.get("allergies").toString();
-                String birthdate = a.get("birthdate").toString();
-                medicalrecords.add(new MedicalRecord(medications, allergies, birthdate));
+            medicalRecordAny.forEach(record -> {
+                String firstName = record.get ("firstName").toString();
+                String lastname = record.get("lastName").toString();
+                String birthdate = record.get("birthdate").toString();
+
+                List<String> medications = new ArrayList<>();
+                record.get("medications").forEach(med -> medications.add(med.toString()));
+
+                List<String> allergies = new ArrayList<>();
+                record.get("allergies").forEach(allergy -> allergies.add(allergy.toString()));
+                records.add(new MedicalRecord(firstName, lastname, medications, allergies, birthdate));
             });
         } catch (IOException e) {
             logger.error("Error reading JSON file at path: " + DATA_PATH, e);
-            throw new RuntimeException("Failed to parse fire station data from JSON", e);
+            throw new RuntimeException("Failed to parse mediocal records data from JSON", e);
         }
-        return medicalrecords;
+        return records;
 
     }
 
@@ -138,17 +150,17 @@ public class DataRepo {
 //                .orElse(null); // Return null if not found
 //    }
 
-    public Person updatePerson(Person updatePerson) {
-        Person existingPerson = getPersonByFullName(updatedPerson.getFirstName(), updatePerson.getLastName());
+    public Person updatePerson(@NotNull Person updatePerson) {
+        Person existingPerson = getPersonByFullName(updatePerson.getFirstName(), updatePerson.getLastName());
 
         if (existingPerson != null) {
-            existingPerson.setFirstName(updatedPerson.getFirstName());
-            existingPerson.setLastName(updatedPerson.getLastName());
-            existingPerson.setAddress(updatedPerson.getAddress());
-            existingPerson.setPhone(updatedPerson.getPhone());
-            existingPerson.setCity(updatedPerson.getCity());
-            existingPerson.setZip(updatedPerson.getZip());
-//            existingPerson.setMedicalRecord(updatedPerson.getMedicalRecord());
+            existingPerson.setFirstName(updatePerson.getFirstName());
+            existingPerson.setLastName(updatePerson.getLastName());
+            existingPerson.setAddress(updatePerson.getAddress());
+            existingPerson.setPhone(updatePerson.getPhone());
+            existingPerson.setCity(updatePerson.getCity());
+            existingPerson.setZip(updatePerson.getZip());
+            //      existingPerson.setMedicalRecord(updatedPerson.getMedicalRecord());
         }
         return existingPerson;
     }
@@ -158,6 +170,51 @@ public class DataRepo {
                 .filter(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName))
                 .findFirst()
                 .orElse(null);
+    }
+    public void addMedicalRecord(MedicalRecord newMedicalRecord) {
+        // Add the new medical record to the list
+        medicalRecords.add(newMedicalRecord);
+        // Log action
+        logger.info("New medical record added for: " + newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName());
+    }
+
+    // Update an existing medical record by firstName and lastName
+    public MedicalRecord updateMedicalRecord(MedicalRecord updatedMedicalRecord) {
+        Optional<MedicalRecord> existingRecordOpt = medicalRecords.stream()
+                .filter(record -> record.getFirstName().equalsIgnoreCase(updatedMedicalRecord.getFirstName())
+                        && record.getLastName().equalsIgnoreCase(updatedMedicalRecord.getLastName()))
+                .findFirst();
+
+        if (existingRecordOpt.isPresent()) {
+            MedicalRecord existingRecord = existingRecordOpt.get();
+            existingRecord.setBirthdate(updatedMedicalRecord.getBirthdate());
+            existingRecord.setMedications(updatedMedicalRecord.getMedications());
+            existingRecord.setAllergies(updatedMedicalRecord.getAllergies());
+
+            logger.info("Medical record updated for: {} {} " + existingRecord.getFirstName() + " " + existingRecord.getLastName());
+            //logger.info(String.format("Medical record updated for: %s %s", existingRecord.getFirstName(), existingRecord.getLastName()));
+            return existingRecord;
+        } else {
+            logger.warn("Medical record not found for: " + updatedMedicalRecord.getFirstName() + " " + updatedMedicalRecord.getLastName());
+            return null; // or throw an exception, depending on the use case
+        }
+    }
+    public FireStation updateFireStation(String address, FireStation updatedFireStation) {
+        Optional<FireStation> existingFireStationOpt = fireStations.stream()
+                .filter(fireStation -> fireStation.getAddress().equalsIgnoreCase(address))
+                .findFirst();
+
+        if (existingFireStationOpt.isPresent()) {
+            FireStation existingFireStation = existingFireStationOpt.get();
+            existingFireStation.setStationNumber(updatedFireStation.getStationNumber());
+            existingFireStation.setAddress(updatedFireStation.getAddress());
+
+            logger.info("Fire station updated for address: " + existingFireStation.getAddress());
+            return existingFireStation;
+        } else {
+            logger.warn("Fire station not found for address: " + address);
+            return null; // or throw an exception, depending on the use case
+        }
     }
 
 }

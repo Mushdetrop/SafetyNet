@@ -22,21 +22,19 @@ public class PeopleController {
     private DataRepo dataRepo;
 
     @PutMapping("/{firstName}/{lastName}")
-//    public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @RequestBody Person updatedPerson) {
+//  public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @RequestBody Person updatedPerson) {
     public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
         logger.info("updating person with name {}{}", firstName, lastName);
         Person person = dataRepo.getPersonByFullName(firstName, lastName);
-//        if (person != null) {
-//            person.setFirstName(person.getFirstName());
-//            person.setLastName(person.getLastName());
-//            person.setAddress(person.getAddress());
-//            person.setPhone(person.getPhone());
-//            person.setCity(person.getCity());
-//            person.setZip(person.getZip());
-////            person.setMedicalRecord(updatedPerson.getMedicalRecord());
-//            logger.info("Successfully updated person: {} {}", firstName, lastName);
-//            person = dataRepo.updatePerson(person);
-//        }
+       if (person != null) {
+            person.setFirstName(person.getFirstName());
+            person.setLastName(person.getLastName());person.setAddress(person.getAddress());
+           person.setPhone(person.getPhone());
+            person.setCity(person.getCity());
+            person.setZip(person.getZip());
+        //   person.setMedicalRecord(updatedPerson.getMedicalRecord());
+            logger.info("Successfully updated person: {} {}", firstName, lastName);person = dataRepo.updatePerson(person);
+        }
         return person;
     }
 
