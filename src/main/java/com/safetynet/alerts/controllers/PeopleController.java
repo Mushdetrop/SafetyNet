@@ -26,14 +26,16 @@ public class PeopleController {
     public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
         logger.info("updating person with name {}{}", firstName, lastName);
         Person person = dataRepo.getPersonByFullName(firstName, lastName);
-       if (person != null) {
+        if (person != null) {
             person.setFirstName(person.getFirstName());
-            person.setLastName(person.getLastName());person.setAddress(person.getAddress());
-           person.setPhone(person.getPhone());
+            person.setLastName(person.getLastName());
+            person.setAddress(person.getAddress());
+            person.setPhone(person.getPhone());
             person.setCity(person.getCity());
             person.setZip(person.getZip());
-        //   person.setMedicalRecord(updatedPerson.getMedicalRecord());
-            logger.info("Successfully updated person: {} {}", firstName, lastName);person = dataRepo.updatePerson(person);
+            //   person.setMedicalRecord(updatedPerson.getMedicalRecord());
+            logger.info("Successfully updated person: {} {}", firstName, lastName);
+            person = dataRepo.updatePerson(person);
         }
         return person;
     }
@@ -73,7 +75,6 @@ public class PeopleController {
     }
 
 
-
     //@PutMapping("/{firstName}/{lastName}")
     //public ResponseEntity<Person> updatePerson(@PathVariable("firstName") String firstName,
     //                                           @PathVariable("lastName") String lastName,
@@ -104,5 +105,21 @@ public class PeopleController {
     //    return ResponseEntity.ok(person);
     //}
 
-}
+    @DeleteMapping("/{firstName}/{lastName}")
+    public Object deletePerson(@PathVariable("firstName") String firstName,
+                               @PathVariable("lastName") String lastName) {
+        logger.info("Removing person with name {} {}", firstName, lastName);
 
+        // Use the removePersonByFullName method with firstName and lastName
+        boolean removed = dataRepo.removePersonByFullName(firstName, lastName);
+
+        if (removed) {
+            logger.info("Successfully deleted person: {} {}", firstName, lastName);
+            return "Person with name " + firstName + " " + lastName + " deleted successfully.";
+        } else {
+            logger.error("Person not found: {} {}", firstName, lastName);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
+}

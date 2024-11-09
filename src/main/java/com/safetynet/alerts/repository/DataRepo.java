@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 import com.jsoniter.JsonIterator;
@@ -118,7 +118,7 @@ public class DataRepo {
             Any medicalRecordAny = any.get("medicalrecords");
 
             medicalRecordAny.forEach(record -> {
-                String firstName = record.get ("firstName").toString();
+                String firstName = record.get("firstName").toString();
                 String lastname = record.get("lastName").toString();
                 String birthdate = record.get("birthdate").toString();
 
@@ -171,6 +171,7 @@ public class DataRepo {
                 .findFirst()
                 .orElse(null);
     }
+
     public void addMedicalRecord(MedicalRecord newMedicalRecord) {
         // Add the new medical record to the list
         medicalRecords.add(newMedicalRecord);
@@ -199,6 +200,7 @@ public class DataRepo {
             return null; // or throw an exception, depending on the use case
         }
     }
+
     public FireStation updateFireStation(String address, FireStation updatedFireStation) {
         Optional<FireStation> existingFireStationOpt = fireStations.stream()
                 .filter(fireStation -> fireStation.getAddress().equalsIgnoreCase(address))
@@ -217,7 +219,29 @@ public class DataRepo {
         }
     }
 
+    public boolean removePersonByFullName(String firstName, String lastName) {
+        Optional<Person> personToRemove = Optional.ofNullable(getPersonByFullName(firstName, lastName));
+        if (personToRemove.isPresent()) {
+            people.remove(personToRemove.get());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeMedicalRecordByFullName(String firstName, String lastName) {
+        Iterator<MedicalRecord> iterator = medicalRecords.iterator();
+        while (iterator.hasNext()) {
+            MedicalRecord record = iterator.next();
+            if (record.getFirstName().equals(firstName) && record.getLastName().equals(lastName)) {
+                iterator.remove();
+                return true; // Successfully removed
+            }
+        }
+        return false; // Record not found
+    }
+
 }
+
 
 
 
