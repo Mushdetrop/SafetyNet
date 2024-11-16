@@ -131,7 +131,7 @@ public class DataRepo {
             });
         } catch (IOException e) {
             logger.error("Error reading JSON file at path: " + DATA_PATH, e);
-            throw new RuntimeException("Failed to parse mediocal records data from JSON", e);
+            throw new RuntimeException("Failed to parse medical records data from JSON", e);
         }
         return records;
 

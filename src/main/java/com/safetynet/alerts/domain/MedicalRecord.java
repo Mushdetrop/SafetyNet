@@ -1,6 +1,8 @@
 package com.safetynet.alerts.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MedicalRecord {
@@ -10,9 +12,14 @@ public class MedicalRecord {
     private List <String> allergies;
     private String birthdate;
 
+    public MedicalRecord() {
+        this.medications = new ArrayList<>();
+        this.allergies = new ArrayList<>();
+    }
+
     public MedicalRecord(String firstName, String lastName, List <String> medications, List<String> allergies, String birthdate) {
-        this.medications = medications;
-        this.allergies = allergies;
+        this.medications = medications == null ? new ArrayList<>() : medications;
+        this.allergies = allergies == null ? new ArrayList<>() : allergies;
         this.birthdate = birthdate;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +50,7 @@ public class MedicalRecord {
     }
 
     public List <String> getMedications() {
-        return medications;
+        return Collections.unmodifiableList(medications);
     }
 
     public void setMedications(List <String> medications) {
@@ -51,7 +58,7 @@ public class MedicalRecord {
     }
 
     public List <String> getAllergies() {
-        return allergies;
+        return Collections.unmodifiableList(allergies);
     }
 
     public void setAllergies(List <String> allergies) {
