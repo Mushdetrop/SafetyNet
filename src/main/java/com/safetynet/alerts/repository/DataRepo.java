@@ -1,28 +1,23 @@
 package com.safetynet.alerts.repository;
 
 
+import com.jsoniter.JsonIterator;
+import com.jsoniter.any.Any;
 import com.safetynet.alerts.domain.FireStation;
 import com.safetynet.alerts.domain.MedicalRecord;
 import com.safetynet.alerts.domain.Person;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Repository;
-
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Optional;
-
-import com.jsoniter.JsonIterator;
-
 import java.util.List;
-
-import com.jsoniter.any.Any;
+import java.util.Optional;
 
 
 @Repository
