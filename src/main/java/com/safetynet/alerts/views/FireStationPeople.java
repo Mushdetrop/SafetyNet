@@ -5,6 +5,7 @@ import java.util.List;
 public class FireStationPeople {
     private List<FireStationPerson> people;
     private Summary summary;
+
     //TODO
     //Create Parameterize constructor that take people, no of adults and no.of children.
     public FireStationPeople(List<FireStationPerson> people, int adults, int children) {
@@ -17,17 +18,11 @@ public class FireStationPeople {
         return people;
     }
 
-    public void setPeople(List<FireStationPerson> people) {
-        this.people = people;
-    }
 
     public Summary getSummary() {
         return summary;
     }
 
-    public void setSummary(Summary summary) {
-        this.summary = summary;
-    }
 
     public static class FireStationPerson {
         private String firstName;
@@ -46,33 +41,21 @@ public class FireStationPeople {
             return firstName;
         }
 
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
 
         public String getLastName() {
             return lastName;
         }
 
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
 
         public String getAddress() {
             return address;
         }
 
-        public void setAddress(String address) {
-            this.address = address;
-        }
 
         public String getPhone() {
             return phone;
         }
 
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
     }
 
     public static class Summary {
@@ -88,16 +71,10 @@ public class FireStationPeople {
             return adults;
         }
 
-        public void setAdults(int adults) {
-            this.adults = adults;
-        }
 
         public int getChildren() {
             return children;
         }
 
-        public void setChildren(int children) {
-            this.children = children;
-        }
     }
 }

@@ -13,17 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResponderController {
     @Autowired
     private ResponderService responderService;
-    private int stationNumber;
+
 
     @GetMapping("/firestation")
-    public FireStationPeople getFireStationPeople(@RequestParam("stationNumber") int StationNumber) {
-        //TODO Create a unit test
-//Mapping station no to address in person
-//create class for view models
-//seperate package for view for eg FireStationPeople or Serviced People. Clarity is very important
-//and related to the business.
-//{"people": [...], "summary": {"adults": 34, "children": 23}}
+    public FireStationPeople getFireStationPeople(@RequestParam("stationNumber") int stationNumber) {
         return responderService.getPeopleByStation(stationNumber);
     }
+
+
 }
 
