@@ -36,6 +36,10 @@ public class ChildAlertService {
                 .map(this::mapToChild)
                 .collect(Collectors.toList());
 
+        if (children.isEmpty()) {
+            return null;
+        }
+
         List<ChildAlert.Resident> otherResidents = residents.stream()
                 .filter(person -> !isChild(person))
                 .map(this::mapToResident)
