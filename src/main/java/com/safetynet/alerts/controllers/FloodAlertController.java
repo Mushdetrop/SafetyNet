@@ -20,7 +20,7 @@ public class FloodAlertController {
     private final FloodAlertService floodAlertService;
 
     @Autowired
-    public FloodAlertController(FloodAlertService floodAlertService) {
+    private FloodAlertController(FloodAlertService floodAlertService) {
         this.floodAlertService = floodAlertService;
     }
 

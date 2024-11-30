@@ -16,7 +16,7 @@ public class PhoneAlertController {
     private final PhoneAlertService phoneAlertService;
 
     @Autowired
-    public PhoneAlertController(PhoneAlertService phoneAlertService) {
+    private PhoneAlertController(PhoneAlertService phoneAlertService) {
         this.phoneAlertService = phoneAlertService;
     }
 

@@ -16,7 +16,7 @@ public class FireAlertController {
     private final FireAlertService fireAlertService;
 
     @Autowired
-    public FireAlertController(FireAlertService fireAlertService) {
+    private FireAlertController(FireAlertService fireAlertService) {
         this.fireAlertService = fireAlertService;
     }
 

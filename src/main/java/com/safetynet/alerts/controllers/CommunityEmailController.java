@@ -16,7 +16,7 @@ public class CommunityEmailController {
     private final CommunityEmailService communityEmailService;
 
     @Autowired
-    public CommunityEmailController(CommunityEmailService communityEmailService) {
+    private CommunityEmailController(CommunityEmailService communityEmailService) {
         this.communityEmailService = communityEmailService;
     }
 
