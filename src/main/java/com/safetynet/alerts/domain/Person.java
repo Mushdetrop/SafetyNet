@@ -6,11 +6,14 @@ public class Person {
     private String lastName;
     private String address;
     private String city;
-   // private MedicalRecord medicalRecord;
-   // private FireStation fireStation;
+    // private MedicalRecord medicalRecord;
+    // private FireStation fireStation;
     private String phone;
     private String zip;
     private String email;
+
+    public Person() {
+    }
 
     public Person(String firstName, String lastName, String address, String city, String phone, String zip, String email) {
         this.firstName = firstName;

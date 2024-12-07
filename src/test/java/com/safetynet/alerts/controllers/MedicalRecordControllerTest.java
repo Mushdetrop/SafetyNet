@@ -1,4 +1,3 @@
-
 package com.safetynet.alerts.controllers;
 
 import com.safetynet.alerts.domain.MedicalRecord;
@@ -13,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,7 +36,7 @@ public class MedicalRecordControllerTest {
                         "John",
                         "Boyd",
                         Arrays.asList("aznol:350mg", "hydrapermazol:100mg"),
-                        Arrays.asList("nillacilan"),
+                        List.of("nillacilan"),
                         "03/06/1984"
                 ),
                 new MedicalRecord(
@@ -50,7 +50,7 @@ public class MedicalRecordControllerTest {
                         "Tenley",
                         "Boyd",
                         new ArrayList<>(),
-                        Arrays.asList("peanut"),
+                        List.of("peanut"),
                         "02/18/2012"
                 )
         ));
@@ -66,14 +66,14 @@ public class MedicalRecordControllerTest {
     @Test
     public void testAddMedicalRecord() throws Exception {
         String newMedicalRecordJson = """
-            {
-                "firstName": "Tessa",
-                "lastName": "Carman",
-                "birthdate": "02/18/2012",
-                "medications": [],
-                "allergies": []
-            }
-        """;
+                    {
+                        "firstName": "Tessa",
+                        "lastName": "Carman",
+                        "birthdate": "02/18/2012",
+                        "medications": [],
+                        "allergies": []
+                    }
+                """;
 
         mockMvc.perform(post("/api/medicalrecords/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,14 +87,14 @@ public class MedicalRecordControllerTest {
     @Test
     public void testUpdateMedicalRecord() throws Exception {
         String updatedMedicalRecordJson = """
-            {
-                "firstName": "John",
-                "lastName": "Boyd",
-                "birthdate": "03/06/1984",
-                "medications": ["aznol:500mg"],
-                "allergies": ["peanut"]
-            }
-        """;
+                    {
+                        "firstName": "John",
+                        "lastName": "Boyd",
+                        "birthdate": "03/06/1984",
+                        "medications": ["aznol:500mg"],
+                        "allergies": ["peanut"]
+                    }
+                """;
 
         mockMvc.perform(put("/api/medicalrecords/John/Boyd")
                         .contentType(MediaType.APPLICATION_JSON)

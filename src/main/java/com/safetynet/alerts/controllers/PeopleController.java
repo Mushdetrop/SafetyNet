@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @RestController
@@ -22,22 +21,27 @@ public class PeopleController {
     private DataRepo dataRepo;
 
     @PutMapping("/{firstName}/{lastName}")
-//  public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @RequestBody Person updatedPerson) {
-    public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
+    public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @RequestBody Person updatedPerson) {
+        //public Person updatePerson(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
         logger.info("updating person with name {}{}", firstName, lastName);
         Person person = dataRepo.getPersonByFullName(firstName, lastName);
         if (person != null) {
-            person.setFirstName(person.getFirstName());
-            person.setLastName(person.getLastName());
-            person.setAddress(person.getAddress());
-            person.setPhone(person.getPhone());
-            person.setCity(person.getCity());
-            person.setZip(person.getZip());
-            //   person.setMedicalRecord(updatedPerson.getMedicalRecord());
+            // Apply updates
+            person.setAddress(updatedPerson.getAddress());
+            person.setCity(updatedPerson.getCity());
+            person.setPhone(updatedPerson.getPhone());
+            person.setZip(updatedPerson.getZip());
+            person.setEmail(updatedPerson.getEmail());
+
+            // Save the updated person back to the repository
+            dataRepo.updatePerson(person);
+
             logger.info("Successfully updated person: {} {}", firstName, lastName);
-            person = dataRepo.updatePerson(person);
+            return person;
+        } else {
+            logger.error("Person not found: {} {}", firstName, lastName);
+            return null; // Or return ResponseEntity with an appropriate status
         }
-        return person;
     }
 
 

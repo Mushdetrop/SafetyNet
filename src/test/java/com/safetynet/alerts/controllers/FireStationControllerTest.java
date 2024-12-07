@@ -49,11 +49,11 @@ public class FireStationControllerTest {
     @Test
     public void testAddFireStation() throws Exception {
         String newFireStationJson = """
-            {
-                "address": "112 Steppes Pl",
-                "stationNumber": 4
-            }
-        """;
+                    {
+                        "address": "112 Steppes Pl",
+                        "stationNumber": 4
+                    }
+                """;
 
         mockMvc.perform(post("/api/firestations")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -66,11 +66,11 @@ public class FireStationControllerTest {
     @Test
     public void testUpdateFireStation() throws Exception {
         String updatedFireStationJson = """
-            {
-                "address": "1509 Culver St",
-                "stationNumber": 5
-            }
-        """;
+                    {
+                        "address": "1509 Culver St",
+                        "stationNumber": 5
+                    }
+                """;
 
         mockMvc.perform(put("/api/firestations/1509 Culver St")
                         .contentType(MediaType.APPLICATION_JSON)
